@@ -31,3 +31,20 @@ def add_blog(request):
             return JsonResponse({'message': 'Invalid request method'}, status=400)
     except Exception as e:
         return JsonResponse({'message': str(e)}, status=500)
+
+
+def get_blog_by_id(request):
+    try:
+        if request.method == 'GET':
+            data = json.loads(request.body)
+            blog_id = data['blog_id']
+            blog = Blog.objects.get(id=blog_id)
+            return JsonResponse({'message': 'Blog post fetched successfully',
+                                 'data': {'title': blog.title, 'body': blog.body, 'image_url': blog.image_url}},
+                                status=200)
+        else:
+            return JsonResponse({'message': 'Invalid request method'}, status=400)
+    except Exception as e:
+        return JsonResponse({'message': str(e)}, status=500)
+
+
